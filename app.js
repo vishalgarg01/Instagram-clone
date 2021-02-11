@@ -5,11 +5,10 @@ const mongoose=require('mongoose');
 const app=express();
 const {MONGOURI}=require('./keys')
 const router=require('./routes/auth');
+const postrouter=require('./routes/post');
 
 const User =require('./models/user');
-app.use(express.json());
-app.use('/',router);
-
+const Post =require('./models/post');
 
 mongoose.connect(MONGOURI,{
     useNewUrlParser: true,
@@ -21,6 +20,11 @@ mongoose.connection.on('connected',()=>{
 mongoose.connection.on('error',(err)=>{
     console.log("err connecting",err)
 })
+
+app.use(express.json());
+app.use('/',router);
+app.use('/',postrouter);
+
 
 app.listen(port,()=>{
     console.log("server running at port ",port)
