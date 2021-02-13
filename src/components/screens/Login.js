@@ -23,8 +23,10 @@ const Login=()=>{
                 M.toast({html:data.error, classes:"#c62828 red darken-3"})
             }
             else{
+                localStorage.setItem("jwt",data.token) //store token
+                localStorage.setItem("user",JSON.stringify(data.user))//store user details
                 M.toast({html:"success", classes:"#43a047 green darken-1"})
-                history.push('/');//navigate to login page
+                history.push('/');//navigate to home page
             }
         }).catch(err=>{console.log(err);})
     }
