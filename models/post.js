@@ -12,7 +12,7 @@ const postSchema=new Schema({
     },
     photo:{
         type:String,
-        default:" "
+        require:true 
     },
     postedBy:{
         type:ObjectId,

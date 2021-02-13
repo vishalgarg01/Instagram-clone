@@ -16,8 +16,8 @@ router.use(bodyParser.json());
 
 router.post('/signup',(req,res)=>{
    const {name,email,password}=req.body
-   if(!email ||!password || !name){
-      return  res.status(422).json({error:"please add all fields"});
+   if(!email || !password || !name){
+    return res.status(422).json({error:"please add all the fields"})
    }
    User.findOne({email:email})
    .then((saveduser)=>{
@@ -40,10 +40,10 @@ router.post('/signup',(req,res)=>{
    }) .catch(err=>{console.log(err)})
 })
 router.post('/signin',(req,res)=>{
-    const {email,password}=req.body;
-    if(!email ||!password ){
-        return  res.status(422).json({error:"please add all fields"});
-     }
+    const {email,password}=req.body
+    if(!email || !password ){
+        return res.status(422).json({error:"please add all the fields"})
+       }
      User.findOne({email:email})
      .then(saveduser=>{
          if(!saveduser){
@@ -55,7 +55,8 @@ router.post('/signin',(req,res)=>{
                 // res.json({message:"successfully signed in"})
                 //if user found sign a token  
                 const token =jwt.sign({_id:saveduser._id},JWT_SECRET)
-                res.json({token})
+                const {_id,name,email}=saveduser
+                res.json({token,user:{_id,name,email}})
              }
              else{
                 return res.status(422).json({error:"invalid email or password"});
