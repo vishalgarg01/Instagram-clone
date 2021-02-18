@@ -13,8 +13,7 @@ const Navbar=()=>{
             <li><Link to="/create">Create Post</Link></li>
           </ul>
         </div>
-      </nav>
-            
+      </nav>  
     );
 }
 export default Navbar;
