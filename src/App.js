@@ -8,6 +8,7 @@ import Signup from './components/screens/Signup';
 import Login from './components/screens/Login';
 import CreatePost from './components/screens/CreatePost';
 import {reducer,initialState} from './reducers/userReducer'; 
+
 export const UserContext=createContext()
 
 const Routing=()=>{
@@ -16,14 +17,13 @@ const Routing=()=>{
   const {state,dispatch}=useContext(UserContext)
   useEffect(()=>{
     const user=JSON.parse(localStorage.getItem("user"))
-
     if(user){
       dispatch({type:"USER",payload:user})
       history.push('/')
     }else{
       history.push('/signin')
     }
-  })
+  },[])
   return (
     <Switch>
         <Route exact path='/' component={Home}/>
@@ -38,7 +38,7 @@ const Routing=()=>{
 function App() {
   const [state,dispatch] =useReducer(reducer,initialState)
   return (
-    <UserContext.Provider value={state,dispatch}>
+    <UserContext.Provider value={{state,dispatch}}>
       <BrowserRouter>
         <Navbar/>
         <Routing/>
