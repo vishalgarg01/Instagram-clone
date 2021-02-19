@@ -7,7 +7,7 @@ var Post = require('../models/post')
 
 router.use(bodyParser.json());
 
-router.get('/allpost',(req,res)=>{
+router.get('/allpost',requirelogin,(req,res)=>{
     Post.find()
     .populate("postedBy","_id name") //populate show details of 1st argument and only those fields which specified in 2nd argument
     .then(posts=>{
@@ -37,6 +37,33 @@ router.get('/mypost',requirelogin,(req,res)=>{
     .then(mypost=>{
         res.json({mypost})
     }).catch(err=>{console.log(err);})
+})
+
+router.put('/like',requirelogin,(req,res)=>{
+    Post.findByIdAndUpdate(req.body.postId,{
+        $push:{likes:req.user._id}
+    },{
+        new:true
+    }).exec((err,result)=>{
+        if(err){
+            return res.status(422).json({error:err})
+        }else{
+            res.json(result)
+        }
+    })
+})
+router.put('/unlike',requirelogin,(req,res)=>{
+    Post.findByIdAndUpdate(req.body.postId,{
+        $pull:{likes:req.user._id}
+    },{
+        new:true
+    }).exec((err,result)=>{
+        if(err){
+            return res.status(422).json({error:err})
+        }else{
+            res.json(result)
+        }
+    })
 })
 
 module.exports=router;
