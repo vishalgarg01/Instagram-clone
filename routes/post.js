@@ -10,6 +10,7 @@ router.use(bodyParser.json());
 router.get('/allpost',requirelogin,(req,res)=>{
     Post.find()
     .populate("postedBy","_id name") //populate show details of 1st argument and only those fields which specified in 2nd argument
+    .populate("comments.postedBy","_id name")
     .then(posts=>{
         res.json({posts})
     }).catch(err=>{console.log(err);})
@@ -58,6 +59,24 @@ router.put('/unlike',requirelogin,(req,res)=>{
     },{
         new:true
     }).exec((err,result)=>{
+        if(err){
+            return res.status(422).json({error:err})
+        }else{
+            res.json(result)
+        }
+    })
+})
+
+router.put('/comment',requirelogin,(req,res)=>{
+    const comment={text:req.body.text,postedBy:req.user._id}
+    Post.findByIdAndUpdate(req.body.postId,{
+        $push:{comments:comment}
+    },{
+        new:true
+    })
+    .populate("postedBy","_id name") 
+    .populate("comments.postedBy","_id name")
+    .exec((err,result)=>{
         if(err){
             return res.status(422).json({error:err})
         }else{
