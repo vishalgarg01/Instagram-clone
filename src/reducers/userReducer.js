@@ -9,6 +9,8 @@ export const reducer=(state,action)=>{
     switch (action.type) {
         case 'USER':
             return { ...state, user:action.payload }
+        case 'CLEAR':
+            return null
         default:
             return state
     }
