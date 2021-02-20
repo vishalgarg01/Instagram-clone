@@ -14,7 +14,7 @@ const Home=()=>{
            // console.log(state)
             setData(result.posts)
         })
-    },[])
+    },[data])
 
     const likePost=(id)=>{
         fetch("/like",{
@@ -87,20 +87,41 @@ const Home=()=>{
             setData(newData)
         }).catch(err=>{console.log(err)})
     }
+    const deletepost=(postid)=>{
+        fetch(`/deletepost/${postid}`,{
+            method:"delete",
+            headers:{
+                "Authorization":"Bearer "+localStorage.getItem("jwt")
+            }
+        }).then(res=>res.json())
+        .then(result=>{
+            console.log(result)
+            const newData=data.filter(item=>{
+                return item._id !== result._id
+            })
+            setData(newData)
+        })
+    }
     return(
         <div className="home">
             {
                 data.map(item=>{
                     return (
                         <div className="card home-card" key={item._id}>
-                            <h5>{item.postedBy.name}</h5>
+                            <h5>{item.postedBy.name} 
+                            {/* if user who posts is logged in only then show delete  */}
+                            {item.postedBy._id ==state.user._id
+                            && <i className="material-icons" style={{float:"right"}}
+                            onClick={()=>deletepost(item._id)}>delete</i>
+                            }
+                            </h5>
                             <div className="card-image">
                                 <img src={item.photo} alt=""/> 
                             </div>
                             <div className="card-content">
                                 <i className="material-icons" style={{color:'red'}}>favorite</i>
                                 {
-                                    //show user like or unlike button on bases of weather he already liked or not
+                                    //show user like or unlike button on bases of whether he already liked or not
                                 item.likes.includes(state.user._id)
                                 ?
                                 <i className="material-icons"
@@ -119,12 +140,16 @@ const Home=()=>{
                                         )
                                     })
                                 }
+
+                                {item.postedBy._id !==state.user._id
+                                &&
                                 <form onSubmit={(e)=>{
                                     e.preventDefault()
                                     makeComment(e.target[0].value,item._id)
                                 }}>
                                     <input type="text" placeholder="add comment"/>
                                 </form>
+                                }
                             </div>
                       </div>
                     );
