@@ -6,6 +6,7 @@ const app=express();
 const {MONGOURI}=require('./keys')
 const router=require('./routes/auth');
 const postrouter=require('./routes/post');
+const userrouter=require('./routes/user');
 
 const User =require('./models/user');
 const Post =require('./models/post');
@@ -24,6 +25,7 @@ mongoose.connection.on('error',(err)=>{
 app.use(express.json());
 app.use('/',router);
 app.use('/',postrouter);
+app.use('/',userrouter);
 
 
 app.listen(port,()=>{
