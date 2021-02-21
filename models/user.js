@@ -1,4 +1,5 @@
 const mongoose=require('mongoose');
+const {ObjectId} =mongoose.Schema.Types
 const Schema= mongoose.Schema;
 const userSchema=new Schema({
     name:{
@@ -12,7 +13,9 @@ const userSchema=new Schema({
     password:{
         type:String,
         require:true
-    }
+    },
+    followers:[{type:ObjectId,ref:"User"}],
+    following:[{type:ObjectId,ref:"User"}]
 });
 
 module.exports = mongoose.model('User', userSchema);
