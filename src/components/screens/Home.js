@@ -1,5 +1,6 @@
 import React, { useEffect, useState,useContext } from 'react';
-import {UserContext} from '../../App'
+import {UserContext} from '../../App';
+import {Link} from 'react-router-dom'
 const Home=()=>{
     const {state,dispatch}=useContext(UserContext)
     const [data,setData]=useState([])
@@ -108,7 +109,7 @@ const Home=()=>{
                 data.map(item=>{
                     return (
                         <div className="card home-card" key={item._id}>
-                            <h5>{item.postedBy.name} 
+                            <h5><Link to={item.postedBy._id !==state.user._id?"/profile/"+item.postedBy._id:"/profile"}>{item.postedBy.name}</Link> 
                             {/* if user who posts is logged in only then show delete  */}
                             {item.postedBy._id ==state.user._id
                             && <i className="material-icons" style={{float:"right"}}
