@@ -100,4 +100,14 @@ router.delete('/deletepost/:postId',requirelogin,(req,res)=>{
     })
 })
 
+router.get('/getfollowingpost',requirelogin,(req,res)=>{
+    //check if postedBy present in following
+    Post.find({postedBy:{$in:req.user.following}})
+    .populate("postedBy","_id name") //populate show details of 1st argument and only those fields which specified in 2nd argument
+    .populate("comments.postedBy","_id name")
+    .then(posts=>{
+        res.json({posts})
+    }).catch(err=>{console.log(err);})
+})
+
 module.exports=router;
