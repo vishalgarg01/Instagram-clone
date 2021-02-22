@@ -3,10 +3,11 @@ import { useParams } from 'react-router-dom';
 import {UserContext} from '../../App'
 const Profile=()=>{
     const {state,dispatch}=useContext(UserContext)
-    const [showfollow,setShowfollow]=useState(true)
     const [mypics,setPics]=useState([])
     const [userprofile,setProfile]=useState(null)
     const {userid}=useParams()
+    //show follow/unfollow button if userid is/not found in following array 
+    const [showfollow,setShowfollow]=useState(state?!state.user.following.includes(userid):true)
    // console.log(userid)
     useEffect(()=>{
         fetch(`/user/${userid}`,{
@@ -86,8 +87,8 @@ const Profile=()=>{
                 borderBottom:"1px solid grey"}}>
                 <div>
                     <img style={{width:"160px",height:"160px",borderRadius:"80px"}} alt=""
-                    src ="https://images.unsplash.com/photo-1582556362337-6a785ee99c63?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MjV8fHBlcnNvbnxlbnwwfDJ8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"/>
-                </div>
+                    src ={userprofile.user.pic}/>
+                </div>  
                 <div>
                     <h1>{userprofile.user.name}</h1>
                     <h5>{userprofile.user.email}</h5>
