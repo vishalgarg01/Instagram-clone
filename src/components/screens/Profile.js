@@ -26,6 +26,7 @@ const Profile=()=>{
                 </div>
                 <div>
                     <h1>{state?state.user.name:"loading"}</h1>
+                    <h5>{state?state.user.email:"loading"}</h5>
                     <div  style={{
                 display:"flex",justifyContent:"space-around",width:"108%"}}>
                         <h6>{mypics.length} posts</h6>
