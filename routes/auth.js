@@ -15,7 +15,7 @@ router.use(bodyParser.json());
 
 
 router.post('/signup',(req,res)=>{
-   const {name,email,password}=req.body
+   const {name,email,password,pic}=req.body
    if(!email || !password || !name){
     return res.status(422).json({error:"please add all the fields"})
    }
@@ -28,7 +28,10 @@ router.post('/signup',(req,res)=>{
            bcrypt.hash(password,12)  //hide password 
            .then(hashedpassword=>{
                 const user =new User({
-                    email,password:hashedpassword,name
+                    email,
+                    password:hashedpassword,
+                    name,
+                    pic
                 })
                 user.save()
                 .then((user)=>{
@@ -54,9 +57,9 @@ router.post('/signin',(req,res)=>{
              if(domatch){
                 // res.json({message:"successfully signed in"})
                 //if user found sign a token  
-                const token =jwt.sign({_id:saveduser._id},JWT_SECRET)
-                const {_id,name,email,followers,following}=saveduser
-                res.json({token,user:{_id,name,email,followers,following}})
+                const token = jwt.sign({_id:saveduser._id},JWT_SECRET)
+                const {_id,name,email,followers,following,pic} = saveduser
+                res.json({token,user:{_id,name,email,followers,following,pic}})
              }
              else{
                 return res.status(422).json({error:"invalid email or password"});
