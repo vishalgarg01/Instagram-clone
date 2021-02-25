@@ -109,9 +109,9 @@ const SubscribedUserPosts=()=>{
                 data.map(item=>{
                     return (
                         <div className="card home-card" key={item._id}>
-                            <h5 style={{padding:"5px"}}><Link to={item.postedBy._id !==state.user._id?"/profile/"+item.postedBy._id:"/profile"}>{item.postedBy.name}</Link> 
+                            <h5 style={{padding:"5px"}}><Link to={item.postedBy._id !==state._id?"/profile/"+item.postedBy._id:"/profile"}>{item.postedBy.name}</Link> 
                             {/* if user who posts is logged in only then show delete  */}
-                            {item.postedBy._id ==state.user._id
+                            {item.postedBy._id ==state._id
                             && <i className="material-icons" style={{float:"right"}}
                             onClick={()=>deletepost(item._id)}>delete</i>
                             }
@@ -123,7 +123,7 @@ const SubscribedUserPosts=()=>{
                                 <i className="material-icons" style={{color:'red'}}>favorite</i>
                                 {
                                     //show user like or unlike button on bases of whether he already liked or not
-                                item.likes.includes(state.user._id)
+                                item.likes.includes(state._id)
                                 ?
                                 <i className="material-icons"
                                 onClick={()=>{unlikePost(item._id)}}>thumb_down</i>
@@ -142,7 +142,7 @@ const SubscribedUserPosts=()=>{
                                     })
                                 }
 
-                                {item.postedBy._id !==state.user._id
+                                {item.postedBy._id !==state._id
                                 &&
                                 <form onSubmit={(e)=>{
                                     e.preventDefault()

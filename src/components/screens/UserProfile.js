@@ -7,7 +7,7 @@ const Profile=()=>{
     const [userprofile,setProfile]=useState(null)
     const {userid}=useParams()
     //show follow/unfollow button if userid is/not found in following array 
-    const [showfollow,setShowfollow]=useState(state?!state.user.following.includes(userid):true)
+    const [showfollow,setShowfollow]=useState(state?!state.following.includes(userid):true)
    // console.log(userid)
     useEffect(()=>{
         fetch(`/user/${userid}`,{
